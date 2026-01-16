@@ -623,10 +623,35 @@ Apache License 2.0
 
 ## 📞 Support & Contact
 
-- 💬 **Issues**: [GitHub Issues](https://github.com/Sreedharvadla062/canfd-fleet-diagnostics/issues)
-- 📧 **Email**: support@fleet-diagnostics.com
-- 🐛 **Bug Reports**: Please include system info and error logs
-- 💡 **Feature Requests**: Describe use case and benefits
+### 🎯 Direct Contact
+
+**Sreedharvadla062**
+
+- 📱 **Phone**: [Available for direct inquiries]
+- 📧 **Email**: [Your email here]
+- 💼 **LinkedIn**: [Your LinkedIn profile]
+- 🐙 **GitHub**: [github.com/Sreedharvadla062](https://github.com/Sreedharvadla062)
+
+### 📋 Project Support
+
+- 💬 **GitHub Issues**: [Report issues & feature requests](https://github.com/Sreedharvadla062/canfd-fleet-diagnostics/issues)
+- 🐛 **Bug Reports**: Please include:
+  - System information (OS, Python version)
+  - Error logs (from `logs/` directory)
+  - Steps to reproduce
+  - Expected vs actual behavior
+
+- 💡 **Feature Requests**: Describe:
+  - Use case you want to solve
+  - Benefits to the project
+  - Implementation suggestions (optional)
+
+### ⏰ Response Times
+
+- 🚨 **Critical Issues**: 24 hours
+- 🔴 **Bug Reports**: 48 hours
+- 💡 **Feature Requests**: 1 week
+- ❓ **General Questions**: 2-3 days
 
 ---
 
