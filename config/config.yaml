@@ -1,0 +1,54 @@
+# CAN-FD Fleet Diagnostics Configuration
+
+# CAN Interface Configuration
+can:
+  interface: "virtual"  # Options: virtual, can0, can1, vcan0, COM1
+  bitrate: 500000       # bits per second
+  data_bitrate: 2000000 # CAN-FD data rate
+  timeout: 1.0          # seconds
+
+# UDS Configuration
+uds:
+  ta: 0x7DF             # Transmission address
+  ta_rx: 0x7E8          # Transmission address receive
+  timeout: 2.0          # seconds
+  session_type: 1       # 1=default, 3=extended, 0x10=programming
+
+# Fleet Configuration
+fleet:
+  max_concurrent_diagnostics: 5
+  diagnostics_interval: 3600  # seconds (1 hour)
+  max_buffer_size: 1000
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "[%(asctime)s] %(name)s - %(levelname)s - %(message)s"
+  file: "logs/fleet_diagnostics.log"
+  max_file_size: 10485760  # 10 MB
+  backup_count: 5
+
+# Database Configuration (optional)
+database:
+  type: "sqlite"  # sqlite, postgresql, mysql
+  path: "data/fleet_diagnostics.db"
+  # For postgresql/mysql:
+  # host: "localhost"
+  # port: 5432
+  # user: "diagnostics_user"
+  # password: "secure_password"
+  # database: "fleet_diagnostics"
+
+# API Configuration (optional)
+api:
+  enabled: false
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+
+# Notification Configuration
+notifications:
+  email_enabled: false
+  email_recipients:
+    - "fleet_manager@example.com"
+  critical_dtc_alert: true
