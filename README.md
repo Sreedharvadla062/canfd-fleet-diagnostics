@@ -233,7 +233,50 @@ pytest tests/ --cov=src  # With coverage
 Error: Failed to connect to CAN bus
 ```
 
-**Solution**: Verify CAN interface is available
+**Causes:**
+- CAN interface not configured or unavailable
+- Incorrect interface name in config.yaml
+- Missing CAN drivers
+- No CAN hardware connected
+
+**Solutions:**
+
+**Windows:**
+```bash
+# Check available COM ports
+mode
+# or use Device Manager to find COM port
+
+# Update config.yaml
+can:
+  interface: "COM1"  # or COM3, COM4, etc.
+  bitrate: 500000
+```
+
+**Linux:**
+```bash
+# List available CAN interfaces
+ip link show
+# or
+ifconfig
+
+# Enable virtual CAN interface (for testing)
+sudo modprobe vcan
+sudo ip link add dev vcan0 type vcan
+sudo ip link set up vcan0
+
+# Check CAN interface status
+ip -d link show vcan0
+```
+
+**macOS:**
+```bash
+# Check for USB-to-CAN adapters
+system_profiler SPUSBDataType | grep -i "can"
+
+# List serial ports
+ls -la /dev/tty.*
+```
 
 ### UDS Connection Timeout
 
@@ -241,10 +284,99 @@ Error: Failed to connect to CAN bus
 Error: Read DTC failed: timeout
 ```
 
-**Solution**: 
-- Increase timeout in config.yaml
-- Verify vehicle is powered on
-- Check CAN bus connection
+**Causes:**
+- Vehicle not powered on
+- CAN bus not connected properly
+- Incorrect UDS addresses in config
+- Vehicle in sleep mode
+
+**Solutions:**
+```yaml
+# Increase timeout in config/config.yaml
+uds:
+  timeout: 5.0          # Increase from 2.0 to 5.0 seconds
+  ta: 0x7DF             # Verify correct address
+  ta_rx: 0x7E8          # Verify correct receive address
+```
+
+**Checklist:**
+- ✅ Vehicle engine is ON or in ACC mode
+- ✅ CAN bus wiring is secure
+- ✅ Termination resistors are installed (120Ω at both ends)
+- ✅ Correct baudrate configured (usually 500kbps)
+- ✅ Vehicle supports UDS on CAN
+
+### ImportError: No module named 'python-can'
+
+```
+ModuleNotFoundError: No module named 'can'
+```
+
+**Solution:**
+```bash
+# Reinstall dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Or install individual packages
+pip install python-can==4.2.0
+pip install python-uds==1.3.1
+```
+
+### Permission Denied on CAN Interface
+
+```
+Error: [Errno 13] Permission denied
+```
+
+**Solution (Linux):**
+```bash
+# Add user to can group
+sudo usermod -a -G can $USER
+sudo usermod -a -G dialout $USER
+
+# Log out and back in, then test
+groups  # verify 'can' is listed
+```
+
+### Hardware Not Detected
+
+```
+Error: CAN device not found
+```
+
+**Check:**
+```bash
+# Windows - Device Manager
+# Look for: USB Serial Port, FTDI, or similar
+
+# Linux
+lsusb
+dmesg | tail -20
+
+# macOS
+system_profiler SPUSBDataType
+```
+
+**Install Drivers:**
+- FTDI: https://ftdichip.com/drivers/
+- Silicon Labs: https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers
+- Peak PCAN: https://www.peak-system.com/Drivers.523.0.html
+- Vector CANoe: https://www.vector.com/int/en/products/products-a-z/software/drivers/
+
+### Configuration File Not Found
+
+```
+FileNotFoundError: config/config.yaml not found
+```
+
+**Solution:**
+```bash
+cd /path/to/canfd-fleet-diagnostics
+ls -la config/
+# If missing, copy from repository
+git checkout config/config.yaml
+```
 
 ## License
 
